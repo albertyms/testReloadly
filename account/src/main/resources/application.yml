@@ -1,0 +1,24 @@
+server:
+  port: 8081
+
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:postgresql://dbpostgresql:5432/testreloadly
+    username: "postgres"
+    password: "1234"
+    initialization-mode: always
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  reloadly:
+    app:
+      jwtSecret: metaDataTestSecretKey
+      jwtExpirationMs: 86400000
+

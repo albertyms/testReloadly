@@ -1,0 +1,76 @@
+version: "3.4"
+
+services:
+  zookeeper:
+    image: bitnami/zookeeper
+    restart: always
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: bitnami/kafka
+    ports:
+      - "9092:9092"
+    restart: always
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+    depends_on:
+      - zookeeper
+  container_name_1:
+    image: account-services
+    container_name: account-services
+    build:
+      context: ./account
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - dbpostgresql
+  container_name_2:
+    image: notification-services
+    container_name: notification-services
+    build:
+      context: ./notification
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    depends_on:
+      - dbpostgresql
+      - account-services
+  container_name_3:
+    image: transaction-services
+    container_name: transaction-services
+    build:
+      context: ./transaction
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    depends_on:
+      - dbpostgresql
+      - account-services
+  dbpostgresql:
+    image: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=testreloadly
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+  dbpostgresql:
+    driver: local
+networks:
+  default:
+    name: service-network
