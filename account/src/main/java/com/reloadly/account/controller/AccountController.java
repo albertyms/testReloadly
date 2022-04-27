@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -32,33 +33,14 @@ public class AccountController {
     @PostMapping
     public ResponseEntity<Object> create(@Validated @RequestBody AccountRequest request) {
         try {
+            long numberAccount = (long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L;
             AccountEntity account = new AccountEntity();
-            account.setIdentificationNumber(request.getIdentificationNumber());
-            account.setHolderName(request.getHolderName());
-            account.setHolderSurName(request.getHolderSurName());
-            account.setHolderLastName(request.getHolderLastName());
-            account.setAddress(request.getAddress());
             account.setAmount(request.getAmount());
-            account.setEmail(request.getEmail());
             account.setTypeAccount(TypeAccount.valueOf(request.getTypeAccount()).toString());
             account.setUser(userDetailsService.findUserByUsername(request.getUserName().toLowerCase()));
+            account.setNumberAccount(numberAccount);
+            account.setCreationDate(new Date());
             account = service.create(account);
-            return ResponseEntity.ok(account);
-        } catch (Exception e) {
-            logger.error(ERROR_PROCESS, e);
-            return new ResponseEntity<>(ERROR_REQUEST, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PutMapping
-    public ResponseEntity<Object> update(@Validated @RequestBody AccountRequest request) {
-        try {
-            AccountEntity account = new AccountEntity();
-            account.setHolderName(request.getHolderName());
-            account.setHolderSurName(request.getHolderSurName());
-            account.setHolderLastName(request.getHolderLastName());
-            account.setAddress(request.getAddress());
-            account = service.update(account);
             return ResponseEntity.ok(account);
         } catch (Exception e) {
             logger.error(ERROR_PROCESS, e);
@@ -78,7 +60,7 @@ public class AccountController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> findAll(@PathVariable String userName) {
+    public ResponseEntity<Object> findAll(@RequestParam String userName) {
         UserEntity user = userDetailsService.findUserByUsername(userName.toLowerCase());
         if(user != null) {
             return ResponseEntity.ok(service.findAllByUser(user));

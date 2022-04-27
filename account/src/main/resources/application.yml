@@ -4,14 +4,22 @@ server:
 spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     hibernate:
       ddl-auto: update
+    generate-ddl: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
   datasource:
-    url: jdbc:postgresql://dbpostgresql:5432/testreloadly
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://dbpostgresql:5432/testreloadly?createDatabaseIfNotExist=true
     username: "postgres"
     password: "1234"
-    initialization-mode: always
   kafka:
     producer:
       bootstrap-servers: localhost:9092
@@ -19,6 +27,6 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   reloadly:
     app:
-      jwtSecret: metaDataTestSecretKey
+      jwtSecret: reloadlyaTestSecretKey
       jwtExpirationMs: 86400000
 

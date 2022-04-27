@@ -33,6 +33,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<AccountEntity> findAllByUser(UserEntity user) {
-        return repository.findByUser(user.getId());
+        return repository.findByUser(user);
     }
 }

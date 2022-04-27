@@ -39,12 +39,28 @@ public class UserEntity {
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<RoleEntity> roleEntities = new HashSet<>();
+    private Set<RoleEntity> roles = new HashSet<>();
+    @Column(name = "identification_number")
+    private Long identificationNumber;
+    @Column(name = "holder_name")
+    private String holderName;
+    @Column(name = "holder_last_name")
+    private String holderLastName;
+    @Column(name = "holder_sur_name")
+    private String holderSurName;
+    @Column(name = "address")
+    private String address;
 
 
-    public UserEntity(String username, String email, String password) {
+    public UserEntity(String username, String email, String password, Long identificationNumber, String holderName,
+                      String holderLastName, String holderSurName, String address) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.identificationNumber = identificationNumber;
+        this.holderName = holderName;
+        this.holderLastName = holderLastName;
+        this.holderSurName = holderSurName;
+        this.address = address;
     }
 }

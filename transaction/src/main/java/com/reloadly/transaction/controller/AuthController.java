@@ -82,42 +82,42 @@ public class AuthController {
         }
 
         // Create new user's account
-        UserEntity userEntity = new UserEntity(signUpRequest.getUsername().toLowerCase(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+        UserEntity user = new UserEntity(signUpRequest.getUsername().toLowerCase(), signUpRequest.getEmail(),
+                encoder.encode(signUpRequest.getPassword()), signUpRequest.getIdentificationNumber(), signUpRequest.getHolderName(),
+                signUpRequest.getHolderLastName(), signUpRequest.getHolderSurName(), signUpRequest.getAddress());
 
         Set<String> strRoles = signUpRequest.getRole();
-        Set<RoleEntity> roleEntities = new HashSet<>();
+        Set<RoleEntity> roles = new HashSet<>();
 
         if (strRoles == null) {
-            RoleEntity userRoleEntity = roleRepository.findByName(RoleEnum.ROLE_USER)
+            RoleEntity userRole = roleRepository.findByName(RoleEnum.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roleEntities.add(userRoleEntity);
+            roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
                         RoleEntity adminRoleEntity = roleRepository.findByName(RoleEnum.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roleEntities.add(adminRoleEntity);
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found 1."));
+                        roles.add(adminRoleEntity);
 
                         break;
                     case "mod":
-                        RoleEntity modRoleEntity = roleRepository.findByName(RoleEnum.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roleEntities.add(modRoleEntity);
+                        RoleEntity modRole = roleRepository.findByName(RoleEnum.ROLE_MODERATOR)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found 2."));
+                        roles.add(modRole);
 
                         break;
                     default:
-                        RoleEntity userRoleEntity = roleRepository.findByName(RoleEnum.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roleEntities.add(userRoleEntity);
+                        RoleEntity userRole = roleRepository.findByName(RoleEnum.ROLE_USER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found 3."));
+                        roles.add(userRole);
                 }
             });
         }
 
-        userEntity.setRoleEntities(roleEntities);
-        userRepository.save(userEntity);
+        user.setRoles(roles);
+        userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

@@ -40,6 +40,16 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles = new HashSet<>();
+    @Column(name = "identification_number")
+    private String identificationNumber;
+    @Column(name = "holder_name")
+    private String holderName;
+    @Column(name = "holder_last_name")
+    private String holderLastName;
+    @Column(name = "holder_sur_name")
+    private String holderSurName;
+    @Column(name = "address")
+    private String address;
 
 
     public UserEntity(String username, String email, String password) {

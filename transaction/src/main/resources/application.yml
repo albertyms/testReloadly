@@ -19,5 +19,5 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   reloadly:
     app:
-      jwtSecret: metaDataTestSecretKey
+      jwtSecret: reloadlyaTestSecretKey
       jwtExpirationMs: 86400000

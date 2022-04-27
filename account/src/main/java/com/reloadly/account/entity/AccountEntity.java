@@ -18,23 +18,11 @@ public class AccountEntity {
     @Id
     @Column(name = "id")
     private Long id;
-    @Column(name = "identification_number")
-    private String identificationNumber;
-    @Column(name = "holder_name")
-    private String holderName;
-    @Column(name = "holder_last_name")
-    private String holderLastName;
-    @Column(name = "holder_sur_name")
-    private String holderSurName;
     @Column(name = "number_account", unique = true, length = 20)
-    private String numberAccount;
-    @Column(name = "address")
-    private String address;
+    private Long numberAccount;
     @Column(name = "amount")
     private Double amount;
-    @Column(name = "email")
-    private String email;
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
     @Column(name = "type_account")
