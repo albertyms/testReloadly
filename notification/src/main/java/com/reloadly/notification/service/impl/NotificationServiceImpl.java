@@ -19,7 +19,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     AccountRepository accountRepository;
 
-    @KafkaListener(topics = "notificationTopic", groupId = "${spring.kafka.consumer.group-id}")
+        @KafkaListener(topics = "notificationTopic", groupId = "${spring.kafka.consumer.group-id}")
     @Override
     public void consume(TransactionEntity transaction, Acknowledgment ack) {
 

@@ -46,7 +46,7 @@ public class TransactionController {
             if (account.isPresent()) {
                 AccountEntity accountEntity = account.get();
                 TransactionEntity transaction = new TransactionEntity();
-                if(request.getTypeTransaction().toLowerCase().equals(TypeTransaction.DEPOSIT.name().toLowerCase())) {
+                if(request.getTypeTransaction().equalsIgnoreCase(TypeTransaction.DEPOSIT.name())) {
                     accountEntity.setAmount(accountEntity.getAmount() + request.getAmount());
                     transaction.setTypeTransaction(request.getTypeTransaction().toUpperCase());
                     transaction.setTransactionDate(new Date());
@@ -57,11 +57,12 @@ public class TransactionController {
                         transaction.setTypeTransaction(request.getTypeTransaction().toUpperCase());
                         transaction.setTransactionDate(new Date());
                         transaction.setAmount(request.getAmount());
+                        transaction.setAccount(accountEntity);
                     } else {
                         return new ResponseEntity<>("This account does not have a sufficient balance", HttpStatus.OK);
                     }
                 }
-                accountService.create(accountEntity);
+                accountService.update(accountEntity);
                 transaction = service.create(transaction);
                 if (transaction.getId() != null) {
                     kafkaTemplate.send("notificationTopic", transaction);

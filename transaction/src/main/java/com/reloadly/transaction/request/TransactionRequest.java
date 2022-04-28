@@ -10,7 +10,7 @@ import lombok.Setter;
 public class TransactionRequest {
 
 
-    @JsonProperty(value = "account")
+    @JsonProperty(value = "accountId")
     private Long accountId;
     @JsonProperty(value = "amount")
     private Double amount;

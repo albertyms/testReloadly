@@ -15,11 +15,6 @@ public class AccountServiceImpl implements AccountService {
     AccountRepository repository;
 
     @Override
-    public AccountEntity create(AccountEntity account) {
-        return repository.save(account);
-    }
-
-    @Override
     public AccountEntity update(AccountEntity account) {
         return repository.save(account);
     }
