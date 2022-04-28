@@ -1,6 +1,5 @@
 package com.reloadly.account.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 
@@ -22,7 +21,6 @@ public class TransactionEntity {
     private Long id;
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
-    @JsonIgnore
     private AccountEntity account;
     @Column(name = "amount")
     private Double amount;

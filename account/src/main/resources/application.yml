@@ -20,11 +20,6 @@ spring:
     url: jdbc:postgresql://dbpostgresql:5432/testreloadly?createDatabaseIfNotExist=true
     username: "postgres"
     password: "1234"
-  kafka:
-    producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   reloadly:
     app:
       jwtSecret: reloadlyaTestSecretKey

@@ -1,6 +1,5 @@
 package com.reloadly.transaction.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,9 +18,8 @@ public class TransactionEntity {
     @Id
     @Column(name = "id")
     private Long id;
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id", nullable = false)
-    @JsonIgnore
     private AccountEntity account;
     @Column(name = "amount")
     private Double amount;
@@ -29,5 +27,7 @@ public class TransactionEntity {
     private String typeTransaction;
     @Column(name = "transaction_date")
     private Date transactionDate;
+    @Column(name = "creation_date")
+    private Date creationDate;
 
 }

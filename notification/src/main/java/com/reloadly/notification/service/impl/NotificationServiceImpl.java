@@ -1,17 +1,22 @@
 package com.reloadly.notification.service.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.reloadly.notification.entity.AccountEntity;
 import com.reloadly.notification.entity.NotificationEntity;
 import com.reloadly.notification.entity.TransactionEntity;
 import com.reloadly.notification.repository.AccountRepository;
 import com.reloadly.notification.repository.NotificationRepository;
-import com.reloadly.notification.service.NotificationService;
+import com.reloadly.notification.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Optional;
 
-public class NotificationServiceImpl implements NotificationService {
+@Component
+public class NotificationServiceImpl {
 
     @Autowired
     NotificationRepository repository;
@@ -19,18 +24,26 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     AccountRepository accountRepository;
 
-        @KafkaListener(topics = "notificationTopic", groupId = "${spring.kafka.consumer.group-id}")
-    @Override
-    public void consume(TransactionEntity transaction, Acknowledgment ack) {
+    @Autowired
+    TransactionRepository transactionRepository;
+
+    @KafkaListener(topics = "notificationTopic", groupId = "${spring.kafka.consumer.group-id}")
+    public void consume(String transactionJson) {
 
         NotificationEntity notification = new NotificationEntity();
 
-        notification.setAccount(accountRepository.findById(transaction.getAccount().getId()).get());
-        notification.setCreationDate(new Date());
-        notification.setTransaction(transaction);
-        notification.setMessage("Test");
-        repository.save(notification);
-        ack.acknowledge();
+        JsonObject jsonObject = new Gson().fromJson(transactionJson, JsonObject.class);
+
+        Optional<AccountEntity> account = accountRepository.findById(jsonObject.get("account").getAsJsonObject().get("id").getAsLong());
+
+        if (account.isPresent()) {
+            Optional<TransactionEntity> transaction = transactionRepository.findById(jsonObject.get("id").getAsLong());
+            notification.setAccount(account.get());
+            notification.setCreationDate(new Date());
+            notification.setTransaction(transaction.orElse(null));
+            notification.setMessage("Test");
+            repository.save(notification);
+        }
 
     }
 }

@@ -10,18 +10,18 @@ services:
       - "zookeeper_data:/bitnami"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
-  kafka:
+  kafka-server:
     image: bitnami/kafka
     ports:
-      - "9092:9092"
+      - "9093:9093"
     restart: always
     volumes:
       - "kafka_data:/bitnami"
     environment:
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_LISTENERS=PLAINTEXT://kafka-server:9093
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-server:9093
     depends_on:
       - zookeeper
   container_name_1:

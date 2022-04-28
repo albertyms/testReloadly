@@ -25,7 +25,6 @@ public class NotificationEntity {
     private AccountEntity account;
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "transaction_id", nullable = false)
-    @JsonIgnore
     private TransactionEntity transaction;
     @Column(name = "message")
     private String message;

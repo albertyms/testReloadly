@@ -1,11 +1,13 @@
 package com.reloadly.transaction.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reloadly.transaction.entity.AccountEntity;
 import com.reloadly.transaction.entity.TransactionEntity;
 import com.reloadly.transaction.request.TransactionRequest;
 import com.reloadly.transaction.service.AccountService;
 import com.reloadly.transaction.service.TransactionService;
 import com.reloadly.transaction.util.TypeTransaction;
+import net.minidev.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.Date;
 import java.util.Optional;
@@ -48,24 +51,28 @@ public class TransactionController {
                 TransactionEntity transaction = new TransactionEntity();
                 if(request.getTypeTransaction().equalsIgnoreCase(TypeTransaction.DEPOSIT.name())) {
                     accountEntity.setAmount(accountEntity.getAmount() + request.getAmount());
-                    transaction.setTypeTransaction(request.getTypeTransaction().toUpperCase());
-                    transaction.setTransactionDate(new Date());
-                    transaction.setAmount(request.getAmount());
                 } else {
                     if(account.get().getAmount() >= request.getAmount()) {
                         accountEntity.setAmount(accountEntity.getAmount() - request.getAmount());
-                        transaction.setTypeTransaction(request.getTypeTransaction().toUpperCase());
-                        transaction.setTransactionDate(new Date());
-                        transaction.setAmount(request.getAmount());
-                        transaction.setAccount(accountEntity);
                     } else {
                         return new ResponseEntity<>("This account does not have a sufficient balance", HttpStatus.OK);
                     }
                 }
-                accountService.update(accountEntity);
+                accountEntity = accountService.update(accountEntity);
+                transaction.setTypeTransaction(request.getTypeTransaction().toUpperCase());
+                transaction.setTransactionDate(new Date());
+                transaction.setAmount(request.getAmount());
+                transaction.setAccount(accountEntity);
+                transaction.setCreationDate(new Date());
+                transaction.setAccount(accountEntity);
                 transaction = service.create(transaction);
+
+                ObjectMapper mapper = new ObjectMapper();
+
+                String json = mapper.writeValueAsString(transaction);
+
                 if (transaction.getId() != null) {
-                    kafkaTemplate.send("notificationTopic", transaction);
+                    kafkaTemplate.send("notificationTopic", json);
                 }
                 return ResponseEntity.ok(transaction);
             } else {
