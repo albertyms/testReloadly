@@ -75,7 +75,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybW9kIiwiaWF0IjoxNjUxMDczNDUxLCJleHAiOjE2NTExNTk4NTF9.MW2WZyR8_nuWG-9OVc8Kub5i3xQcQWX_ATMTCJs1s6MfUyq7PzWw4jlRjXq9M27n83HnYvGHT0IHc2uNlFY-7A",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybW9kIiwiaWF0IjoxNjUxMTcwOTU0LCJleHAiOjE2NTEyNTczNTR9.39A1xqBqH0pKj3yrODLWDZ_wyUPWZOq_P6tVi7JlmHPR6Ir-d5JqAueweHAUIGrQh8yC29l7cnCBu8oACZN6Lg",
 							"type": "string"
 						}
 					]
@@ -84,7 +84,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"amount\": 300.00,\r\n    \"email\": \"usermod@email.com\",\r\n    \"userName\": \"usermod\",\r\n    \"typeAccount\": \"SAVING\"\r\n}",
+					"raw": "{\r\n    \"amount\": 3000.00,\r\n    \"email\": \"usermod@email.com\",\r\n    \"userName\": \"usermod\",\r\n    \"typeAccount\": \"SAVING\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -153,7 +153,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybW9kIiwiaWF0IjoxNjUxMDczNDUxLCJleHAiOjE2NTExNTk4NTF9.MW2WZyR8_nuWG-9OVc8Kub5i3xQcQWX_ATMTCJs1s6MfUyq7PzWw4jlRjXq9M27n83HnYvGHT0IHc2uNlFY-7A",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybW9kIiwiaWF0IjoxNjUxMjQxNTA3LCJleHAiOjE2NTEzMjc5MDd9.oNMlxcn6MoHU3Yz8zQlB8JmjuOoslAeHXwd1eHhQlZn3hQwnkUtqgts0Bfs6i2Mzn5VyB71ukuJHs9ER7cTAAA",
 							"type": "string"
 						}
 					]
@@ -183,7 +183,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybW9kIiwiaWF0IjoxNjUxMDczNDUxLCJleHAiOjE2NTExNTk4NTF9.MW2WZyR8_nuWG-9OVc8Kub5i3xQcQWX_ATMTCJs1s6MfUyq7PzWw4jlRjXq9M27n83HnYvGHT0IHc2uNlFY-7A",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybW9kIiwiaWF0IjoxNjUxMjQxNTA3LCJleHAiOjE2NTEzMjc5MDd9.oNMlxcn6MoHU3Yz8zQlB8JmjuOoslAeHXwd1eHhQlZn3hQwnkUtqgts0Bfs6i2Mzn5VyB71ukuJHs9ER7cTAAA",
 							"type": "string"
 						}
 					]
@@ -213,8 +213,38 @@
 		{
 			"name": "POST - Make transaction",
 			"request": {
-				"method": "GET",
-				"header": []
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybW9kIiwiaWF0IjoxNjUxMjQxNTA3LCJleHAiOjE2NTEzMjc5MDd9.oNMlxcn6MoHU3Yz8zQlB8JmjuOoslAeHXwd1eHhQlZn3hQwnkUtqgts0Bfs6i2Mzn5VyB71ukuJHs9ER7cTAAA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": 1,\r\n    \"amount\": 100.00,\r\n    \"typeTransaction\": \"WITHDRAWAL\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8083/api/transaction",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"transaction"
+					]
+				}
 			},
 			"response": []
 		}
