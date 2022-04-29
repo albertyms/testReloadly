@@ -12,7 +12,6 @@
 ### Instructions for installation with docker-compose
 
 + **With Docker:**
-    + Compile each component with maven using the command: mvn clean install -DskipTests
     + Run the command: docker-compose up --build (Docker must be installed).
     
 
