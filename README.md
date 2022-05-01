@@ -8,6 +8,7 @@
 - Spring Boot 2.6.4
 - Docker
 - Docker Compose
+- Kafka
 
 ### Instructions for installation with docker-compose
 
